@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Three.js-練習</title>
+</head>
+<body>
+    <div id="stage"></div>
+    <script src="./three-js/build/three.min.js"></script>
+    <script src="./three-js/examples/js/controls/OrbitControls.js"></script>
+    <script src="./three-js/examples/js/loaders/MMDLoader.js"></script>
+    <script src="./three-js/examples/js/animation/MMDPhysics.js"></script>
+    <script src="./three-js/examples/js/libs/charsetencoder.min.js"></script>
+    <script src="./three-js/examples/js/libs/ammo.js"></script>
+    <script src="./three-js/examples/js/loaders/TGALoader.js"></script>
+    <script src="./three-js/examples/js/animation/CCDIKSolver.js"></script>
+    <script src="./three-js/examples/js/Detector.js"></script>
+    <script src="./three-js/examples/js/libs/stats.min.js"></script>
+    <script src="./three-js/examples/js/utils/GeometryUtils.js"></script>
+    <script>
+        (function(){
+            var width = 500,
+                height = 300,
+                mesh;
+            
+            //scene
+            var scene = new THREE.Scene();
+            
+            //model
+            var onProgress = function (xhr) {
+                if ( xhr.lengthComputable ) {
+                var percentComplete = xhr.loaded / xhr.total * 100;
+                console.log( Math.round(percentComplete, 2) + '% downloaded' );
+                }
+            };
+            
+            var onError = function (xhr) {
+            };
+            
+            //mesh
+            var modelFile = './three-js/examples/models/mmd/miku/miku_v2.pmd';
+            var vmdFiles = ['./three-js/examples/models/mmd/vmd/wavefile_v2.vmd'];
+            
+            helper = new THREE.MMDHelper(renderer);
+            var loader = new THREE.MMDLoader();
+            loader.setDefaultTexturePath('./three-js/examples/models/mmd/default/');
+            
+            loader.load(modelFile, vmdFiles, function(object){
+                mesh = object;
+                mesh.castShadow = true;
+                mesh.position.y = -10;
+                
+                helper.add(mesh);
+                helper.setAnimation(mesh);
+                helper.setCamera(camera);
+                
+                //ToDo:モバイルデバイス時は処理を行わないようにする
+                helper.setPhysics(mesh);
+                
+                helper.unifyAnimationDuration({afterglow: 2.0});
+                
+                scene.add(mesh);
+            }, onProgress, onError);
+            
+            
+            var pgeometry = new THREE.PlaneGeometry(500, 500, 1, 1);
+            var pmaterial = new THREE.MeshLambertMaterial({ color: '#82ff90', side: THREE.DoubleSide });
+            var plane = new THREE.Mesh(pgeometry, pmaterial);
+            plane.receiveShadow = true;
+            plane.position.set(0, 0, 0);//rotate,scale
+            plane.rotation.x = 90 * Math.PI / 180;
+            scene.add(plane);
+            
+            //light
+            var light = new THREE.DirectionalLight(0xffffff, 1);
+            light.position.set(0, 300, 30);
+            light.castShadow = true;
+            light.shadow.camera.top = 300;
+            light.shadow.camera.bottom = -300;
+            light.shadow.camera.left = -300;
+            light.shadow.camera.right = 300;
+            scene.add(light);
+            var ambient = new THREE.AmbientLight(0x550000);
+            scene.add(ambient);
+            
+            //camera
+            var camera = new THREE.PerspectiveCamera(45, width / height, 1, 10000);
+            camera.position.set(200, 300, 500);
+            
+            //helper
+            var axis = new THREE.AxisHelper(1000);
+            axis.position.set(0, 0, 0);
+            scene.add(axis);
+            
+            var directionalLightShadowHelper = new THREE.CameraHelper( light.shadow.camera);
+            scene.add( directionalLightShadowHelper);
+            
+            var directionalLightHelper = new THREE.DirectionalLightHelper( light);
+            scene.add( directionalLightHelper);
+            
+            //rendering
+            var renderer = new THREE.WebGLRenderer({antialias: true});
+            renderer.setSize(width, height);
+            renderer.setClearColor(0xeeeeee, 1);
+            renderer.shadowMap.enabled = true;
+            document.getElementById('stage').appendChild(renderer.domElement);
+            //renderer.render(scene, camera);
+            
+            //control
+            var controls = new THREE.OrbitControls(camera, renderer.domElement);
+            
+            function render(){
+                renderer.render(scene, camera);
+                controls.update();
+                
+                /*if (mesh) {
+                    helper.animate( clock.getDelta() );
+                    helper.render( scene, camera );
+                }
+                else {
+                    renderer.clear();
+                    renderer.render( scene, camera );
+                }*/
+            }
+            
+            //animate
+            function animate(){
+                requestAnimationFrame(animate);
+                render();
+            }
+            animate();
+            
+        })();
+    </script>
+</body>
+</html>
