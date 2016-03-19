@@ -40,32 +40,6 @@
             var onError = function (xhr) {
             };
             
-            /*//mesh
-            var modelFile = './three-js/examples/models/mmd/miku/miku_v2.pmd';
-            var vmdFiles = ['./three-js/examples/models/mmd/vmd/wavefile_v2.vmd'];
-            
-            helper = new THREE.MMDHelper(renderer);
-            var loader = new THREE.MMDLoader();
-            loader.setDefaultTexturePath('./three-js/examples/models/mmd/default/');
-            
-            loader.load(modelFile, vmdFiles, function(object){
-                mesh = object;
-                mesh.castShadow = true;
-                mesh.position.y = -10;
-                
-                helper.add(mesh);
-                helper.setAnimation(mesh);
-                helper.setCamera(camera);
-                
-                //ToDo:モバイルデバイス時は処理を行わないようにする
-                helper.setPhysics(mesh);
-                
-                helper.unifyAnimationDuration({afterglow: 2.0});
-                
-                scene.add(mesh);
-            }, onProgress, onError);*/
-            
-            
             var pgeometry = new THREE.PlaneGeometry(500, 500, 1, 1);
             var pmaterial = new THREE.MeshLambertMaterial({ color: '#82ff90', side: THREE.DoubleSide });
             var plane = new THREE.Mesh(pgeometry, pmaterial);
