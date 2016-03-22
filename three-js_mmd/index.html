@@ -11,6 +11,7 @@
     <div id="stage"></div>
     <script src="./three-js/build/three.min.js"></script>
     <script src="./three-js/examples/js/controls/DeviceOrientationControls.js"></script>
+    <script src="./three-js/examples/js/controls/OrbitControls.js"></script>
     <script src="./three-js/examples/js/loaders/MMDLoader.js"></script>
     <script src="./three-js/examples/js/animation/MMDPhysics.js"></script>
     <script src="./three-js/examples/js/libs/charsetencoder.min.js"></script>
@@ -87,7 +88,16 @@
             //renderer.render(scene, camera);
             
             //control
-            var controls = new THREE.DeviceOrientationControls(camera, renderer.domElement);
+            //モバイルデバイス時
+            if(isMobileDevie()){
+                var controls = new THREE.DeviceOrientationControls(camera, renderer.domElement);
+            }
+            //PC時
+            else{
+                var controls = new THREE.OrbitControls(camera, renderer.domElement);
+                camera.position.set(0, 40, 30);
+                
+            }
             
             function render(){
                 renderer.render(scene, camera);
@@ -127,8 +137,10 @@
                 helper.setAnimation(mesh);
                 helper.setCamera(camera);
                 
-                //ToDo:モバイルデバイス時は処理を行わないようにする
-                helper.setPhysics(mesh);
+                //モバイルデバイス時は重力処理を無しにする
+                if(!isMobileDevie()){
+                    helper.setPhysics(mesh);
+                }
                 
                 helper.unifyAnimationDuration({afterglow: 2.0});
                 
@@ -136,6 +148,22 @@
             }, onProgress, onError);
             
         })();
+        
+        //モバイルデバイスを検知する
+        function isMobileDevie(){
+            if(navigator === undefined || navigator.userAgent === undefined){
+                return true;
+            }
+            
+            var s = navigator.userAgent;
+            
+            if(s.match(/iPhone/i) || s.match(/iPod/i) || s.match(/webOS/i) || s.match(/BlackBerry/i) || (s.match(/Windows/i)) && (s.match(/Phone/i)) || (s.match(/Android/i)) && (s.match(/Mobile/i))){
+               return true;
+            }
+            else{
+               return false;
+            }
+        }
     </script>
     <a href="https://github.com/rikyuusima/web_mmd/tree/master" class="button" id="view-sources">View Sources</a>
 </body>
