@@ -10,7 +10,7 @@
     <a href="./three-js/LICENSE.html" class="button" id="license">three.js-LICENSE</a>
     <div id="stage"></div>
     <script src="./three-js/build/three.min.js"></script>
-    <script src="./three-js/examples/js/controls/OrbitControls.js"></script>
+    <script src="./three-js/examples/js/controls/DeviceOrientationControls.js"></script>
     <script src="./three-js/examples/js/loaders/MMDLoader.js"></script>
     <script src="./three-js/examples/js/animation/MMDPhysics.js"></script>
     <script src="./three-js/examples/js/libs/charsetencoder.min.js"></script>
@@ -87,7 +87,7 @@
             //renderer.render(scene, camera);
             
             //control
-            var controls = new THREE.OrbitControls(camera, renderer.domElement);
+            var controls = new THREE.DeviceOrientationControls(camera, renderer.domElement);
             
             function render(){
                 renderer.render(scene, camera);
