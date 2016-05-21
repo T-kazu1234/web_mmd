@@ -1,12 +1,10 @@
-# web_mmd
+# Web MMD
 ## Summary
 three.jsでMMD(PMDとVMD)のロードを行う。  
 
-
 ## Author
 * [rikyuusima](https://github.com/rikyuusima)
-  - three-js_mmd/
-    - three.js等ライブラリを除く
+  - three.js等ライブラリを除く
 
 ## License
 * three.js [MIT License](https://github.com/rikyuusima/web_mmd/blob/master/three-js_mmd/three-js/LICENSE)
