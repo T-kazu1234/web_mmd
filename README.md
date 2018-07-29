@@ -3,7 +3,7 @@
 three.jsでMMD(PMDとVMD)のロードを行う。  
 
 ## Author
-* [rikyuusima](https://github.com/rikyuusima)
+* [equanz](https://github.com/equanz)
   - three.js等ライブラリを除く
 
 ## License
